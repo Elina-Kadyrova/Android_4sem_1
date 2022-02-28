@@ -1,3 +1,15 @@
 <resources>
-    <string name="app_name">Android_4sem_1</string>
+    <string name="app_name">Weather app</string>
+    <string name="search_hint">Search Here</string>
+    <string name="temp">%1$s°</string>
+    <string name="temp_min">Min: %1$s°/</string>
+    <string name="temp_max">Max: %1$s°</string>
+    <string name="time">%1$s</string>
+    <string name="weather_speed">%1$s m/s</string>
+    <string name="direction">Direction</string>
+    <string name="humidity">Humidity</string>
+    <string name="pressure">Pressure</string>
+    <string name="wind">Wind</string>
+    <string name="sunset">Sunset</string>
+    <string name="sunrise">Sunrise</string>
 </resources>
