@@ -8,8 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import com.itis.android_4sem_1.R
-import com.itis.android_4sem_1.data.WeatherDetailModel
-import com.itis.android_4sem_1.retrofit.ApiFactory
+import com.itis.android_4sem_1.data.DetailModel
+import com.itis.android_4sem_1.api.ApiCreator
 import kotlinx.coroutines.launch
 import kotlinx.android.synthetic.main.fragment_detail.*
 import java.text.SimpleDateFormat
@@ -17,7 +17,7 @@ import java.text.SimpleDateFormat
 class DetailFragment : Fragment() {
 
     private var city: String? = null
-    private val api = ApiFactory.weatherApi
+    private val api = ApiCreator.weatherApi
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +43,7 @@ class DetailFragment : Fragment() {
     }
 
     @SuppressLint("SimpleDateFormat", "SetTextI18n")
-    private fun initWeatherView(cityWeather: WeatherDetailModel) {
+    private fun initWeatherView(cityWeather: DetailModel) {
         address.text = cityWeather.name
         temp.text = context?.resources?.getString(
             R.string.temp,
@@ -57,13 +57,20 @@ class DetailFragment : Fragment() {
             R.string.temp_max,
             cityWeather.main.temp.toInt().toString()
         )
+        feels_like.text = context?.resources?.getString(
+            R.string.feels_like,
+            cityWeather.main.feelsLike.toInt().toString()
+        )
         sunrise.text = SimpleDateFormat("HH:mm").format(cityWeather.sys.sunrise * 1000)
         sunset.text = SimpleDateFormat("HH:mm").format(cityWeather.sys.sunset * 1000)
-        wind.text = context?.resources?.getString(R.string.weather_speed,cityWeather.wind.speed.toString())
+        wind.text = context?.resources?.getString(
+            R.string.weather_speed,
+            cityWeather.wind.speed.toString()
+        )
         pressure.text = cityWeather.main.pressure.toString()
         humidity.text = cityWeather.main.humidity.toString() + "%"
         direction.text =
-            when (cityWeather.wind.deg) {
+            when (cityWeather.wind.degree) {
                 in 0..22 -> "N"
                 in 23..67 -> "N-E"
                 in 68..112 -> "E"

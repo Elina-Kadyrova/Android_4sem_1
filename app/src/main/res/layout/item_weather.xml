@@ -26,10 +26,10 @@
                 android:id="@+id/item_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Kazan"
+                android:text="@string/city_default"
                 android:textColor="@color/black"
                 android:textStyle="bold"
-                android:textSize="24sp"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

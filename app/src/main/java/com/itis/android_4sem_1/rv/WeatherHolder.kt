@@ -5,7 +5,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.itis.android_4sem_1.R
-import com.itis.android_4sem_1.data.WeatherListModel
+import com.itis.android_4sem_1.data.DetailModel
 
 class WeatherHolder(
     itemView: View,
@@ -15,10 +15,9 @@ class WeatherHolder(
     private val city: TextView = itemView.findViewById(R.id.item_name)
     private val temp: TextView = itemView.findViewById(R.id.item_temp)
 
-    fun bind(weatherDetail: WeatherListModel.WeatherDetail) {
+    fun bind(weatherDetail: DetailModel) {
         city.text = weatherDetail.name
         val temperature = weatherDetail.main.temp.toInt()
-        temp.text = itemView.resources.getString(R.string.temp, temperature.toString())
 
         when (temperature){
             in 30..100 -> temp.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorTemperature_20))
@@ -28,6 +27,8 @@ class WeatherHolder(
             in -30..-15 -> temp.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorTemperatureCold_20))
             in -100..-30 -> temp.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorTemperatureCold_100))
         }
+
+        temp.text = temperature.toString()
 
         itemView.setOnClickListener {
             onClick(weatherDetail.name)

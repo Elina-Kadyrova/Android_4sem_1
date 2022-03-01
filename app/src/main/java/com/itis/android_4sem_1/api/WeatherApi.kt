@@ -1,7 +1,7 @@
-package com.itis.android_4sem_1.retrofit
+package com.itis.android_4sem_1.api
 
-import com.itis.android_4sem_1.data.WeatherDetailModel
-import com.itis.android_4sem_1.data.WeatherListModel
+import com.itis.android_4sem_1.data.DetailModel
+import com.itis.android_4sem_1.data.ListModel
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -12,10 +12,9 @@ interface WeatherApi {
         @Query("lat") latitude:Double,
         @Query("lon") longitude:Double,
         @Query("cnt") count:Int
-    ): WeatherListModel
+    ): ListModel
 
     @GET("weather?units=metric")
     suspend fun getWeather(
-        @Query("q") cityName: String
-    ) : WeatherDetailModel
+        @Query("q") id: String) : DetailModel
 }

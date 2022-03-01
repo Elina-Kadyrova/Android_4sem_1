@@ -16,7 +16,7 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.material.snackbar.Snackbar
 import com.itis.android_4sem_1.R
-import com.itis.android_4sem_1.retrofit.ApiFactory
+import com.itis.android_4sem_1.api.ApiCreator
 import com.itis.android_4sem_1.rv.WeatherAdapter
 import kotlinx.coroutines.launch
 import java.lang.Exception
@@ -26,7 +26,7 @@ class SearchCityFragment : Fragment()  {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var recyclerView: RecyclerView? = null
     private var searchView: SearchView? = null
-    private val api = ApiFactory.weatherApi
+    private val api = ApiCreator.weatherApi
     private val DEFAULT_LATITUDE = 54.7887
     private val DEFAULT_LONGITUDE = 49.1221
 
@@ -44,10 +44,10 @@ class SearchCityFragment : Fragment()  {
         return inflater.inflate(R.layout.fragment_search_city, container, false)
     }
 
-    override fun onStart() {
-        super.onStart()
-        recyclerView = view?.findViewById(R.id.rv_list)
-        searchView = view?.findViewById(R.id.searchView)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        recyclerView = view.findViewById(R.id.rv_list)
+        searchView = view.findViewById(R.id.searchView)
         getLastLocation()
         searchCity()
     }
@@ -116,7 +116,7 @@ class SearchCityFragment : Fragment()  {
                             .addToBackStack("list")
                             .commit()
                     }
-                    catch (ex:Exception){
+                    catch (exception:Exception){
                         Snackbar.make(requireView(), "Couldn't find the city", Snackbar.LENGTH_SHORT).show()
                     }
                 }

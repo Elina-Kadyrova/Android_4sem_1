@@ -4,9 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.itis.android_4sem_1.R
-import com.itis.android_4sem_1.data.WeatherListModel
+import com.itis.android_4sem_1.data.ListModel
 
-class WeatherAdapter(private var weatherListModel: WeatherListModel,
+class WeatherAdapter(private var listModel: ListModel,
                      private val onClick:(String) -> (Unit)) :
     RecyclerView.Adapter<WeatherHolder>() {
 
@@ -17,9 +17,9 @@ class WeatherAdapter(private var weatherListModel: WeatherListModel,
         )
     }
 
-    override fun getItemCount() = weatherListModel.list.size
+    override fun getItemCount() = listModel.list.size
 
     override fun onBindViewHolder(holder: WeatherHolder, position: Int) {
-        holder.bind(weatherListModel.list[position])
+        holder.bind(listModel.list[position])
     }
 }
