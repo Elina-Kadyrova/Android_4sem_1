@@ -4,8 +4,9 @@
     <string name="temp">%1$s°</string>
     <string name="temp_min">Min: %1$s°/</string>
     <string name="temp_max">Max: %1$s°</string>
-    <string name="time">%1$s</string>
+    <string name="feels_like">Feels like:%1$s°</string>
     <string name="weather_speed">%1$s m/s</string>
+    <string name="pressure_mm">%1$s mm</string>
     <string name="direction">Direction</string>
     <string name="humidity">Humidity</string>
     <string name="pressure">Pressure</string>
@@ -13,5 +14,4 @@
     <string name="sunset">Sunset</string>
     <string name="sunrise">Sunrise</string>
     <string name="city_default">Kazan</string>
-    <string name="feels_like">Feels like:%1$s°</string>
 </resources>

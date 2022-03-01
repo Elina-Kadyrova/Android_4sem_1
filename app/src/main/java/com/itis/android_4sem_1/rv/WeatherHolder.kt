@@ -20,12 +20,12 @@ class WeatherHolder(
         val temperature = weatherDetail.main.temp.toInt()
 
         when (temperature){
-            in 30..100 -> temp.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorTemperature_20))
-            in 15..30 -> temp.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorTemperature_10))
-            in 0..15 -> temp.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorTemperature_0))
-            in -15..0 -> temp.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorTemperatureCold_10))
-            in -30..-15 -> temp.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorTemperatureCold_20))
-            in -100..-30 -> temp.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorTemperatureCold_100))
+            in 30..100 -> temp.setTextColor(ContextCompat.getColor(itemView.context, R.color.beautiful_orange))
+            in 15..30 -> temp.setTextColor(ContextCompat.getColor(itemView.context, R.color.beautiful_yellow))
+            in 0..15 -> temp.setTextColor(ContextCompat.getColor(itemView.context, R.color.beautiful_green))
+            in -15..0 -> temp.setTextColor(ContextCompat.getColor(itemView.context, R.color.beautiful_light_blue))
+            in -30..-15 -> temp.setTextColor(ContextCompat.getColor(itemView.context, R.color.beautiful_blue))
+            in -100..-30 -> temp.setTextColor(ContextCompat.getColor(itemView.context, R.color.beautiful_dark_blue))
         }
 
         temp.text = temperature.toString()

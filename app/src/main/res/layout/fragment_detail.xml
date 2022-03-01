@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -59,14 +60,14 @@
                     android:id="@+id/temp_min"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/temp_min"
+                    android:text="Min: "
                     android:textColor="@color/grey"
                     android:textSize="18sp" />
                 <TextView
                     android:id="@+id/temp_max"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/temp_max"
+                    android:text="Max: "
                     android:textColor="@color/grey"
                     android:textSize="18sp" />
             </LinearLayout>
@@ -81,7 +82,7 @@
                 android:id="@+id/feels_like"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/feels_like"
+                android:text="Feels like: "
                 android:textColor="@color/grey"
                 android:textSize="18sp" />
             </LinearLayout>
@@ -112,7 +113,8 @@
                         android:layout_width="52dp"
                         android:layout_height="52dp"
                         android:src="@drawable/direction"
-                        tools:ignore="ContentDescription" />
+                        tools:ignore="ContentDescription"
+                        app:tint="@color/beautiful_pink" />
                     <Space
                         android:layout_width="wrap_content"
                         android:layout_height="8dp" />
@@ -142,7 +144,8 @@
                         android:layout_width="52dp"
                         android:layout_height="52dp"
                         android:src="@drawable/wind"
-                        tools:ignore="ContentDescription" />
+                        tools:ignore="ContentDescription"
+                        android:tint="@color/beautiful_light_blue"/>
                     <Space
                         android:layout_width="wrap_content"
                         android:layout_height="8dp" />
@@ -171,7 +174,8 @@
                         android:layout_width="52dp"
                         android:layout_height="52dp"
                         android:src="@drawable/pressure"
-                        tools:ignore="ContentDescription" />
+                        tools:ignore="ContentDescription"
+                        app:tint="@color/beautiful_green" />
                     <Space
                         android:layout_width="wrap_content"
                         android:layout_height="8dp" />
@@ -208,7 +212,8 @@
                         android:layout_width="52dp"
                         android:layout_height="52dp"
                         android:src="@drawable/humidity"
-                        tools:ignore="ContentDescription" />
+                        tools:ignore="ContentDescription"
+                        app:tint="@color/beautiful_blue" />
                     <Space
                         android:layout_width="wrap_content"
                         android:layout_height="8dp" />
@@ -237,7 +242,8 @@
                         android:layout_width="52dp"
                         android:layout_height="52dp"
                         android:src="@drawable/sunrise"
-                        tools:ignore="ContentDescription" />
+                        tools:ignore="ContentDescription"
+                        app:tint="@color/beautiful_orange" />
                     <Space
                         android:layout_width="wrap_content"
                         android:layout_height="8dp" />
@@ -266,7 +272,8 @@
                         android:layout_width="52dp"
                         android:layout_height="52dp"
                         android:src="@drawable/sunset"
-                        tools:ignore="ContentDescription" />
+                        tools:ignore="ContentDescription"
+                        app:tint="@color/beautiful_yellow" />
                     <Space
                         android:layout_width="wrap_content"
                         android:layout_height="8dp" />

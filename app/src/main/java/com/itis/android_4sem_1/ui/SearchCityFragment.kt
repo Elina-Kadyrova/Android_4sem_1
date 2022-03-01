@@ -16,7 +16,7 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.material.snackbar.Snackbar
 import com.itis.android_4sem_1.R
-import com.itis.android_4sem_1.api.ApiCreator
+import com.itis.android_4sem_1.api.ApiService
 import com.itis.android_4sem_1.rv.WeatherAdapter
 import kotlinx.coroutines.launch
 import java.lang.Exception
@@ -26,7 +26,7 @@ class SearchCityFragment : Fragment()  {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var recyclerView: RecyclerView? = null
     private var searchView: SearchView? = null
-    private val api = ApiCreator.weatherApi
+    private val api = ApiService.weatherApi
     private val DEFAULT_LATITUDE = 54.7887
     private val DEFAULT_LONGITUDE = 49.1221
 
@@ -45,11 +45,11 @@ class SearchCityFragment : Fragment()  {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         recyclerView = view.findViewById(R.id.rv_list)
         searchView = view.findViewById(R.id.searchView)
         getLastLocation()
         searchCity()
+        super.onViewCreated(view, savedInstanceState)
     }
 
     @SuppressLint("MissingPermission")
@@ -59,17 +59,16 @@ class SearchCityFragment : Fragment()  {
             .addOnSuccessListener {
                     location->
                 if (location != null) {
-                    initRv(Coordinates(location.latitude,location.longitude))
+                    initRv(location.latitude, location.longitude)
                 }
                 else{
-                    Snackbar.make(requireView(), "The location is not available", Snackbar.LENGTH_SHORT).show()
-                    initRv(Coordinates(DEFAULT_LATITUDE, DEFAULT_LONGITUDE))
+                    Snackbar.make(requireView(), "Your location is not available", Snackbar.LENGTH_SHORT).show()
+                    initRv(DEFAULT_LATITUDE, DEFAULT_LONGITUDE)
                 }
             }
     }
 
     private fun checkPermissions(){
-        Coordinates(0.0,0.0)
         if (context?.let {
                 ActivityCompat.checkSelfPermission(
                     it,
@@ -82,20 +81,20 @@ class SearchCityFragment : Fragment()  {
                 )
             } != PackageManager.PERMISSION_GRANTED
         ){
-            initRv(Coordinates(DEFAULT_LATITUDE, DEFAULT_LONGITUDE))
+            initRv(DEFAULT_LATITUDE, DEFAULT_LONGITUDE)
         }
     }
 
-    private fun initRv(coordinates:Coordinates){
+    private fun initRv(latitude:Double, longitude:Double){
         recyclerView?.run{
             lifecycleScope.launch {
                 adapter = WeatherAdapter(
-                    api.getWeatherList(coordinates.latitude,coordinates.longitude,10)
+                    api.getWeatherList(latitude, longitude,10)
                 ) { cityName ->
                     parentFragmentManager.beginTransaction()
                         .replace(R.id.container,
                         DetailFragment.newInstance(cityName))
-                        .addToBackStack("list")
+                        .addToBackStack(null)
                         .commit()
                 }
             }
@@ -113,7 +112,7 @@ class SearchCityFragment : Fragment()  {
                             .beginTransaction()
                             .replace(R.id.container,
                             DetailFragment.newInstance(query))
-                            .addToBackStack("list")
+                            .addToBackStack(null)
                             .commit()
                     }
                     catch (exception:Exception){
@@ -129,8 +128,6 @@ class SearchCityFragment : Fragment()  {
     }
 
     companion object {
-        fun newInstance(p1: String, p2: Int) = SearchCityFragment()
+        fun newInstance() = SearchCityFragment()
     }
-
-    data class Coordinates(val latitude:Double, val longitude:Double)
 }

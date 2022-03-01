@@ -15,16 +15,26 @@ data class DetailModel(
     val dt: Int,
     @SerializedName("id")
     val id: Int,
+    @SerializedName("lapstupdate")
+    val lastupdate: Lastupdate,
     @SerializedName("main")
     val main: Main,
     @SerializedName("name")
     val name: String,
+    @SerializedName("rain")
+    val rain: Rain,
+    @SerializedName("precipiration")
+    val precipiration: Precipiration,
+    @SerializedName("snow")
+    val snow: Snow,
     @SerializedName("sys")
     val sys: Sys,
     @SerializedName("timezone")
     val timezone: Int,
     @SerializedName("visibility")
     val visibility: Int,
+    @SerializedName("weather")
+    val weather: List<Weather>,
     @SerializedName("wind")
     val wind: Wind,
 )
