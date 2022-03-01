@@ -44,7 +44,7 @@ class DetailFragment : Fragment() {
 
     @SuppressLint("SimpleDateFormat", "SetTextI18n")
     private fun initWeatherView(cityWeather: DetailModel) {
-        address.text = cityWeather.name
+        cityName.text = cityWeather.name
         temp.text = context?.resources?.getString(
             R.string.temp,
             cityWeather.main.temp.toInt().toString()
