@@ -1,10 +1,10 @@
-package com.itis.android_4sem_1.rv
+package com.itis.android_4sem_1.presentation.rv
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.itis.android_4sem_1.R
-import com.itis.android_4sem_1.data.ListModel
+import com.itis.android_4sem_1.domain.entity.ListModel
 
 class WeatherAdapter(private var listModel: ListModel,
                      private val onClick:(String) -> (Unit)) :

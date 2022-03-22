@@ -1,20 +1,21 @@
-package com.itis.android_4sem_1.api
+package com.itis.android_4sem_1.di
 
+import com.itis.android_4sem_1.BuildConfig
+import com.itis.android_4sem_1.data.api.WeatherApi
+import com.itis.android_4sem_1.data.api.WeatherRepositoryImpl
+import com.itis.android_4sem_1.domain.repository.WeatherRepository
+import kotlinx.coroutines.Dispatchers
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.util.concurrent.TimeUnit
 
-object ApiService {
+object DIContainer {
 
     private const val QUERY_KEY = "appid"
     private const val API_URL = "https://api.openweathermap.org/data/2.5/"
     private const val API_KEY = "56fc6c6cb76c0864b4cd055080568268"
-
-    val weatherApi: WeatherApi by lazy {
-        retrofit.create(WeatherApi::class.java)
-    }
 
     private val interceptor =
         Interceptor{
@@ -32,15 +33,29 @@ object ApiService {
     private val okHttpClient by lazy {
         OkHttpClient.Builder()
             .addInterceptor(interceptor)
-            .connectTimeout(20, TimeUnit.SECONDS)
+            .also {
+                if (BuildConfig.DEBUG) {
+                    it.addInterceptor(
+                        HttpLoggingInterceptor()
+                            .setLevel(
+                                HttpLoggingInterceptor.Level.BODY
+                            )
+                    )
+                }
+            }
             .build()
     }
 
-    private val retrofit by lazy {
+    val weatherApi: WeatherApi by lazy {
         Retrofit.Builder()
             .client(okHttpClient)
             .baseUrl(API_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+            .create(WeatherApi::class.java)
     }
+/*
+    val weatherRepository: WeatherRepository = WeatherRepositoryImpl(
+        api = weatherApi,
+    )*/
 }

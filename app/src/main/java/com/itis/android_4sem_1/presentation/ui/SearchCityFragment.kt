@@ -1,4 +1,4 @@
-package com.itis.android_4sem_1.ui
+package com.itis.android_4sem_1.presentation.ui
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -16,8 +16,11 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.material.snackbar.Snackbar
 import com.itis.android_4sem_1.R
-import com.itis.android_4sem_1.api.ApiService
-import com.itis.android_4sem_1.rv.WeatherAdapter
+import com.itis.android_4sem_1.data.api.WeatherRepositoryImpl
+import com.itis.android_4sem_1.di.DIContainer
+import com.itis.android_4sem_1.domain.usecases.GetWeatherListUsecase
+import com.itis.android_4sem_1.domain.usecases.GetWeatherUsecase
+import com.itis.android_4sem_1.presentation.rv.WeatherAdapter
 import kotlinx.coroutines.launch
 import java.lang.Exception
 
@@ -26,7 +29,9 @@ class SearchCityFragment : Fragment()  {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var recyclerView: RecyclerView? = null
     private var searchView: SearchView? = null
-    private val api = ApiService.weatherApi
+    private val repository = WeatherRepositoryImpl(DIContainer.weatherApi)
+    private var getWeatherListUseCase = GetWeatherListUsecase(repository = repository)
+    private var getWeatherUseCase = GetWeatherUsecase(repository = repository)
     private val DEFAULT_LATITUDE = 54.7887
     private val DEFAULT_LONGITUDE = 49.1221
 
@@ -89,11 +94,12 @@ class SearchCityFragment : Fragment()  {
         recyclerView?.run{
             lifecycleScope.launch {
                 adapter = WeatherAdapter(
-                    api.getWeatherList(latitude, longitude,10)
+                   getWeatherListUseCase(longitude, latitude)
                 ) { cityName ->
                     parentFragmentManager.beginTransaction()
                         .replace(R.id.container,
-                        DetailFragment.newInstance(cityName))
+                            DetailFragment.newInstance(cityName)
+                        )
                         .addToBackStack(null)
                         .commit()
                 }
@@ -107,11 +113,12 @@ class SearchCityFragment : Fragment()  {
             override fun onQueryTextSubmit(query: String): Boolean {
                 lifecycleScope.launch {
                     try {
-                        api.getWeather(query)
+                        getWeatherUseCase(query)
                         parentFragmentManager
                             .beginTransaction()
                             .replace(R.id.container,
-                            DetailFragment.newInstance(query))
+                                DetailFragment.newInstance(query)
+                            )
                             .addToBackStack(null)
                             .commit()
                     }

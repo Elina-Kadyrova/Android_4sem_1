@@ -1,4 +1,4 @@
-package com.itis.android_4sem_1.data
+package com.itis.android_4sem_1.data.api.response
 
 import com.google.gson.annotations.SerializedName
 

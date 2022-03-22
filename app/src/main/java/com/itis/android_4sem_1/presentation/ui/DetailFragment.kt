@@ -1,4 +1,4 @@
-package com.itis.android_4sem_1.ui
+package com.itis.android_4sem_1.presentation.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -8,8 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import com.itis.android_4sem_1.R
-import com.itis.android_4sem_1.data.DetailModel
-import com.itis.android_4sem_1.api.ApiService
+import com.itis.android_4sem_1.data.api.WeatherRepositoryImpl
+import com.itis.android_4sem_1.domain.entity.DetailModel
+import com.itis.android_4sem_1.di.DIContainer
+import com.itis.android_4sem_1.domain.usecases.GetWeatherListUsecase
+import com.itis.android_4sem_1.domain.usecases.GetWeatherUsecase
 import kotlinx.coroutines.launch
 import kotlinx.android.synthetic.main.fragment_detail.*
 import java.text.SimpleDateFormat
@@ -17,7 +20,8 @@ import java.text.SimpleDateFormat
 class DetailFragment : Fragment() {
 
     private var city: String? = null
-    private val api = ApiService.weatherApi
+    private val repository = WeatherRepositoryImpl(DIContainer.weatherApi)
+    private var getWeatherUseCase = GetWeatherUsecase(repository = repository)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +42,7 @@ class DetailFragment : Fragment() {
 
     private fun initWeather(cityTitle: String) {
         lifecycleScope.launch {
-            weatherView(api.getWeather(cityTitle))
+            weatherView(getWeatherUseCase(cityTitle))
         }
     }
 

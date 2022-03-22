@@ -1,11 +1,11 @@
-package com.itis.android_4sem_1.rv
+package com.itis.android_4sem_1.presentation.rv
 
 import android.view.View
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.itis.android_4sem_1.R
-import com.itis.android_4sem_1.data.DetailModel
+import com.itis.android_4sem_1.domain.entity.DetailModel
 
 class WeatherHolder(
     itemView: View,
