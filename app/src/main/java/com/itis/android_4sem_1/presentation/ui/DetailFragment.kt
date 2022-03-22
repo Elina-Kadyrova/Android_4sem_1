@@ -2,10 +2,12 @@ package com.itis.android_4sem_1.presentation.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.itis.android_4sem_1.R
 import com.itis.android_4sem_1.data.api.WeatherRepositoryImpl
@@ -13,6 +15,8 @@ import com.itis.android_4sem_1.domain.entity.DetailModel
 import com.itis.android_4sem_1.di.DIContainer
 import com.itis.android_4sem_1.domain.usecases.GetWeatherListUsecase
 import com.itis.android_4sem_1.domain.usecases.GetWeatherUsecase
+import com.itis.android_4sem_1.presentation.viewModel.DetailViewModel
+import com.itis.android_4sem_1.utils.ViewModelFactory
 import kotlinx.coroutines.launch
 import kotlinx.android.synthetic.main.fragment_detail.*
 import java.text.SimpleDateFormat
@@ -20,29 +24,44 @@ import java.text.SimpleDateFormat
 class DetailFragment : Fragment() {
 
     private var city: String? = null
-    private val repository = WeatherRepositoryImpl(DIContainer.weatherApi)
-    private var getWeatherUseCase = GetWeatherUsecase(repository = repository)
+    private lateinit var viewModel: DetailViewModel
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        initFactory()
+        initObservers()
         arguments?.let {
             city = it.getString("CITY_NAME")
         }
         city?.let {
             initWeather(it)
         }
+        return inflater.inflate(R.layout.fragment_detail, container, false)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_detail, container, false)
+    private fun initObservers(){
+        viewModel.weather.observe(viewLifecycleOwner){ it ->
+            it.fold(onSuccess ={
+                weatherView(it)
+            },onFailure ={
+                Log.e("Error","error")
+            })
+        }
+    }
+
+    private fun initFactory(){
+        val factory = ViewModelFactory(DIContainer)
+        viewModel = ViewModelProvider(
+            this,
+            factory
+        )[DetailViewModel::class.java]
     }
 
     private fun initWeather(cityTitle: String) {
         lifecycleScope.launch {
-            weatherView(getWeatherUseCase(cityTitle))
+           viewModel.getWeatherByName(cityTitle)
         }
     }
 

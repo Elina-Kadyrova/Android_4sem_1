@@ -4,6 +4,8 @@ import com.itis.android_4sem_1.BuildConfig
 import com.itis.android_4sem_1.data.api.WeatherApi
 import com.itis.android_4sem_1.data.api.WeatherRepositoryImpl
 import com.itis.android_4sem_1.domain.repository.WeatherRepository
+import com.itis.android_4sem_1.domain.usecases.GetWeatherListUsecase
+import com.itis.android_4sem_1.domain.usecases.GetWeatherUsecase
 import kotlinx.coroutines.Dispatchers
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -54,8 +56,15 @@ object DIContainer {
             .build()
             .create(WeatherApi::class.java)
     }
-/*
+
     val weatherRepository: WeatherRepository = WeatherRepositoryImpl(
         api = weatherApi,
-    )*/
+    )
+
+    val getWeatherListUsecase: GetWeatherListUsecase = GetWeatherListUsecase(
+        repository = weatherRepository
+    )
+    val getWeatherUsecase: GetWeatherUsecase = GetWeatherUsecase(
+        repository= weatherRepository
+    )
 }

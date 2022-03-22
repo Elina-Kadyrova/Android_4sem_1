@@ -10,9 +10,9 @@ class GetWeatherListUsecase(private val repository: WeatherRepository,
                             private val scope: CoroutineDispatcher = Dispatchers.Main
 ) {
 
-    suspend operator fun invoke(longitude: Double?, latitude: Double?): ListModel=
+    suspend operator fun invoke(latitude: Double?, longitude: Double?): ListModel=
         withContext(scope) {
-            repository.getWeatherList(longitude, latitude, 10)
+            repository.getWeatherList(latitude, longitude, 10)
         }
 
 }
