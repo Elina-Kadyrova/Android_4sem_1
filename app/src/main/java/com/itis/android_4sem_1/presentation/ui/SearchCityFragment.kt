@@ -87,23 +87,6 @@ class SearchCityFragment : Fragment()  {
         }
     }
 
-   /* private fun initRv(latitude:Double, longitude:Double){
-        recyclerView?.run{
-            lifecycleScope.launch {
-                adapter = WeatherAdapter(
-                   viewModel.getWeatherList(latitude, longitude)
-                ) { cityName ->
-                    parentFragmentManager.beginTransaction()
-                        .replace(R.id.container,
-                            DetailFragment.newInstance(cityName)
-                        )
-                        .addToBackStack(null)
-                        .commit()
-                }
-            }
-        }
-    }*/
-
     private fun searchCity(){
         searchView?.setOnQueryTextListener(object :SearchView.OnQueryTextListener{
 
@@ -141,22 +124,24 @@ class SearchCityFragment : Fragment()  {
 
     private fun initObservers() {
         viewModel.weather.observe(viewLifecycleOwner) {
-            it.fold(onSuccess = { w ->
+            it.fold(
+                onSuccess = {
+                        detailModel ->
                 parentFragmentManager.beginTransaction()
                     .replace(R.id.container,
-                        DetailFragment.newInstance(w.name)
+                        DetailFragment.newInstance(detailModel.name)
                     )
                     .addToBackStack(null)
                     .commit()
-            }, onFailure = {
-                Log.e("asd", it.message.toString())
-            })
+            },
+                onFailure = { Log.e("err", "error") })
         }
         viewModel.weatherList.observe(viewLifecycleOwner) {
-            it.fold(onSuccess = { w ->
+            it.fold(onSuccess =
+            { listModel ->
                 recyclerView?.run{
                     lifecycleScope.launch {
-                        adapter = WeatherAdapter(w)
+                        adapter = WeatherAdapter(listModel)
                         { cityName ->
                             parentFragmentManager.beginTransaction()
                                 .replace(R.id.container,
@@ -167,7 +152,8 @@ class SearchCityFragment : Fragment()  {
                         }
                     }
                 }
-            }, onFailure = {})
+            },
+                onFailure = { Log.e("err", "error") })
         }
     }
 

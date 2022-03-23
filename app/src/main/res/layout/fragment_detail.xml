@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable name="weatherInfo" type="com.itis.android_4sem_1.domain.entity.DetailModel"/>
+    </data>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -40,7 +45,8 @@
                 android:layout_gravity="center"
                 android:fontFamily="sans-serif-thin"
                 android:textColor="@color/white"
-                android:textSize="110sp" />
+                android:textSize="110sp"
+                android:text="@{@string/temp(Double.toString(weatherInfo.main.temp))}"/>
         </LinearLayout>
 
         <LinearLayout
@@ -60,14 +66,14 @@
                     android:id="@+id/temp_min"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Min: "
+                    android:text='@{"Min: " + weatherInfo.main.tempMin + "°"}'
                     android:textColor="@color/grey"
                     android:textSize="18sp" />
                 <TextView
                     android:id="@+id/temp_max"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Max: "
+                    android:text='@{"Max: " + weatherInfo.main.tempMax + "°"}'
                     android:textColor="@color/grey"
                     android:textSize="18sp" />
             </LinearLayout>
@@ -82,7 +88,7 @@
                 android:id="@+id/feels_like"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Feels like: "
+                android:text='@{"Feels like: " + weatherInfo.main.feelsLike + "°"}'
                 android:textColor="@color/grey"
                 android:textSize="18sp" />
             </LinearLayout>
@@ -129,7 +135,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/white"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        android:text=""/>
                 </LinearLayout>
 
 
@@ -145,7 +152,7 @@
                         android:layout_height="52dp"
                         android:src="@drawable/wind"
                         tools:ignore="ContentDescription"
-                        android:tint="@color/beautiful_light_blue"/>
+                        app:tint="@color/beautiful_light_blue" />
                     <Space
                         android:layout_width="wrap_content"
                         android:layout_height="8dp" />
@@ -160,7 +167,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/white"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        android:text='@{weatherInfo.wind.speed + "m/s"}'/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -190,7 +198,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/white"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        android:text='@{Double.valueOf(weatherInfo.main.pressure) +"mm"}'/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -228,7 +237,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/white"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        android:text='@{weatherInfo.main.humidity + "%"}'/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -258,7 +268,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/white"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        android:text="@{String.valueOf(weatherInfo.sys.sunrise)}"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -288,9 +299,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/white"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        android:text="@{String.valueOf(weatherInfo.sys.sunset)}"/>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
 </RelativeLayout>
+</layout>
