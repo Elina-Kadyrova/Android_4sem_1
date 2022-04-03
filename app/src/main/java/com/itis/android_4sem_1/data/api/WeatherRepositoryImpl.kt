@@ -1,8 +1,9 @@
 package com.itis.android_4sem_1.data.api
 
 import com.itis.android_4sem_1.domain.repository.WeatherRepository
+import javax.inject.Inject
 
-class WeatherRepositoryImpl(
+class WeatherRepositoryImpl @Inject constructor(
     private val api: WeatherApi
     ) : WeatherRepository
 {

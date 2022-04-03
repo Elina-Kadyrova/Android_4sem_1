@@ -2,24 +2,19 @@ package com.itis.android_4sem_1.utils
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.itis.android_4sem_1.di.DIContainer
-import com.itis.android_4sem_1.presentation.viewModel.DetailViewModel
-import com.itis.android_4sem_1.presentation.viewModel.SearchViewModel
+import javax.inject.Inject
+import javax.inject.Provider
 
-class ViewModelFactory(
-    private val di: DIContainer,
+class ViewModelFactory @Inject constructor(
+    private val viewModelMap: Map<Class<out ViewModel>, @JvmSuppressWildcards Provider<ViewModel>>
 ) : ViewModelProvider.Factory {
 
-    override fun <T : ViewModel> create(modelClass: Class<T>): T =
-        when {
-            modelClass.isAssignableFrom(SearchViewModel::class.java) ->
-                SearchViewModel(di.getWeatherUsecase, di.getWeatherListUsecase)
-                        as? T ?: throw IllegalArgumentException("Unknown ViewModel class")
-            modelClass.isAssignableFrom(DetailViewModel::class.java) ->
-                DetailViewModel(di.getWeatherUsecase)
-                        as? T ?: throw IllegalArgumentException("Unknown ViewModel class")
-            else ->
-                throw IllegalArgumentException("Unknown ViewModel class")
-        }
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        val result = viewModelMap[modelClass] ?: viewModelMap.entries.firstOrNull {
+            modelClass.isAssignableFrom(it.key)
+        }?.value ?: throw IllegalArgumentException("Unknown model class $modelClass")
+        @Suppress("UNCHECKED_CAST")
+        return result.get() as T
+    }
 }
 

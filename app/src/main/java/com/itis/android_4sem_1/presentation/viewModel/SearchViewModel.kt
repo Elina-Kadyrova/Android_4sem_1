@@ -9,8 +9,9 @@ import com.itis.android_4sem_1.domain.entity.ListModel
 import com.itis.android_4sem_1.domain.usecases.GetWeatherListUsecase
 import com.itis.android_4sem_1.domain.usecases.GetWeatherUsecase
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class SearchViewModel(
+class SearchViewModel @Inject constructor(
     private val getWeatherUsecase: GetWeatherUsecase,
     private val getWeatherListUsecase: GetWeatherListUsecase
 ): ViewModel()  {

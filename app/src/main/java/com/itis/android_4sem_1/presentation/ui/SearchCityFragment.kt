@@ -11,34 +11,41 @@ import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.material.snackbar.Snackbar
+import com.itis.android_4sem_1.App
 import com.itis.android_4sem_1.R
-import com.itis.android_4sem_1.di.DIContainer
 import com.itis.android_4sem_1.presentation.rv.WeatherAdapter
 import com.itis.android_4sem_1.presentation.viewModel.SearchViewModel
-import com.itis.android_4sem_1.utils.ViewModelFactory
 import kotlinx.coroutines.launch
 import java.lang.Exception
+import javax.inject.Inject
 
 class SearchCityFragment : Fragment()  {
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var recyclerView: RecyclerView? = null
     private var searchView: SearchView? = null
-    private lateinit var viewModel: SearchViewModel
+    @Inject
+    lateinit var factory: ViewModelProvider.Factory
+    private val viewModel: SearchViewModel by viewModels { factory }
     private val DEFAULT_LATITUDE = 54.7887
     private val DEFAULT_LONGITUDE = 49.1221
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        App.appComponent.inject(this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        initFactory()
         initObservers()
         context?.also {
             fusedLocationClient = LocationServices.getFusedLocationProviderClient(it)
@@ -112,14 +119,6 @@ class SearchCityFragment : Fragment()  {
                 return false
             }
         })
-    }
-
-    private fun initFactory() {
-        val factory = ViewModelFactory(DIContainer)
-        viewModel = ViewModelProvider(
-            this,
-            factory
-        )[SearchViewModel::class.java]
     }
 
     private fun initObservers() {

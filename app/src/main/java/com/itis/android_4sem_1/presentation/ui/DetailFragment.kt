@@ -7,32 +7,38 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.itis.android_4sem_1.App
 import com.itis.android_4sem_1.R
 import com.itis.android_4sem_1.databinding.FragmentDetailBinding
 import com.itis.android_4sem_1.domain.entity.DetailModel
-import com.itis.android_4sem_1.di.DIContainer
 import com.itis.android_4sem_1.presentation.viewModel.DetailViewModel
-import com.itis.android_4sem_1.utils.ViewModelFactory
 import kotlinx.coroutines.launch
 import kotlinx.android.synthetic.main.fragment_detail.*
 import java.text.SimpleDateFormat
+import javax.inject.Inject
 
 class DetailFragment : Fragment() {
 
     private var binding: FragmentDetailBinding? = null
     private var city: String? = null
-    private lateinit var viewModel: DetailViewModel
+    @Inject
+    lateinit var factory: ViewModelProvider.Factory
+    private val viewModel: DetailViewModel by viewModels { factory }
     private var detailModel: DetailModel? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        App.appComponent.inject(this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentDetailBinding.inflate(layoutInflater)
-        initFactory()
         initObservers()
         binding?.weatherInfo = detailModel
         arguments?.let {
@@ -55,14 +61,6 @@ class DetailFragment : Fragment() {
         }
     }
 
-    private fun initFactory() {
-        val factory = ViewModelFactory(DIContainer)
-        viewModel = ViewModelProvider(
-            this,
-            factory
-        )[DetailViewModel::class.java]
-    }
-
     private fun initWeather(cityTitle: String) {
         lifecycleScope.launch {
            viewModel.getWeatherByName(cityTitle)
@@ -73,10 +71,22 @@ class DetailFragment : Fragment() {
     private fun weatherView(cityWeather: DetailModel) {
         binding?.let {
             cityName.text = cityWeather.name
-            temp.text = cityWeather.main.temp.toInt().toString()
-            temp_min.text = cityWeather.main.temp.toInt().toString()
-            temp_max.text = cityWeather.main.tempMax.toInt().toString()
-            feels_like.text = cityWeather.main.feelsLike.toInt().toString()
+            temp.text = context?.resources?.getString(
+                R.string.temp,
+                cityWeather.main.temp.toInt().toString()
+            )
+            temp_min.text = context?.resources?.getString(
+                R.string.temp_min,
+                cityWeather.main.temp.toInt().toString()
+            )
+            temp_max.text = context?.resources?.getString(
+                R.string.temp_max,
+                cityWeather.main.temp.toInt().toString()
+            )
+            feels_like.text = context?.resources?.getString(
+                R.string.feels_like,
+                cityWeather.main.feelsLike.toInt().toString()
+            )
             direction.text =
                 when (cityWeather.wind.degree) {
                     in 0..22 -> "N"
@@ -90,11 +100,17 @@ class DetailFragment : Fragment() {
                     in 337..361 -> "N"
                     else -> "-"
                 }
-            wind.text = cityWeather.wind.speed.toString()
-            pressure.text = (cityWeather.main.pressure / 1.333).toInt().toString()
-            humidity.text = cityWeather.main.humidity.toString()
-            sunrise.text = SimpleDateFormat("HH:mm").format(cityWeather.sys.sunrise)
-            sunset.text = SimpleDateFormat("HH:mm").format(cityWeather.sys.sunset)
+            wind.text = context?.resources?.getString(
+                R.string.weather_speed,
+                cityWeather.wind.speed.toString()
+            )
+            pressure.text = context?.resources?.getString(
+                R.string.pressure_mm,
+                (cityWeather.main.pressure/1.333).toInt().toString()
+            )
+            humidity.text = cityWeather.main.humidity.toString() + "%"
+            sunrise.text = SimpleDateFormat("HH:mm").format(cityWeather.sys.sunrise * 1000)
+            sunset.text = SimpleDateFormat("HH:mm").format(cityWeather.sys.sunset * 1000)
         }
     }
 
