@@ -8,9 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.itis.android_4sem_1.App
 import com.itis.android_4sem_1.R
 import com.itis.android_4sem_1.databinding.FragmentDetailBinding
 import com.itis.android_4sem_1.domain.entity.DetailModel
@@ -21,13 +19,18 @@ import kotlinx.android.synthetic.main.fragment_detail.*
 import java.text.SimpleDateFormat
 import javax.inject.Inject
 
-
 @AndroidEntryPoint
 class DetailFragment : Fragment() {
 
     private var binding: FragmentDetailBinding? = null
-    private var city: String? = null
-    private val viewModel: DetailViewModel by viewModels()
+    private val city: String by lazy {
+        arguments?.getString("CITY_NAME")?: ""
+    }
+    @Inject
+    lateinit var factory: DetailViewModel.Factory
+    private val viewModel: DetailViewModel by viewModels {
+        DetailViewModel.provideFactory(factory, city)
+    }
     private var detailModel: DetailModel? = null
 
     override fun onCreateView(
@@ -37,12 +40,8 @@ class DetailFragment : Fragment() {
         binding = FragmentDetailBinding.inflate(layoutInflater)
         initObservers()
         binding?.weatherInfo = detailModel
-        arguments?.let {
-            city = it.getString("CITY_NAME")
-        }
-        city?.let {
-            initWeather(it)
-        }
+
+        initWeather()
         return binding?.root
     }
 
@@ -57,9 +56,9 @@ class DetailFragment : Fragment() {
         }
     }
 
-    private fun initWeather(cityTitle: String) {
+    private fun initWeather() {
         lifecycleScope.launch {
-           viewModel.getWeatherByName(cityTitle)
+           viewModel.getWeatherByName()
         }
     }
 
