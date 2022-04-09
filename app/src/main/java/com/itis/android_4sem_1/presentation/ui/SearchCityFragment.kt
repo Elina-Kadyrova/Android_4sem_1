@@ -22,25 +22,21 @@ import com.itis.android_4sem_1.App
 import com.itis.android_4sem_1.R
 import com.itis.android_4sem_1.presentation.rv.WeatherAdapter
 import com.itis.android_4sem_1.presentation.viewModel.SearchViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.lang.Exception
 import javax.inject.Inject
 
+
+@AndroidEntryPoint
 class SearchCityFragment : Fragment()  {
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var recyclerView: RecyclerView? = null
     private var searchView: SearchView? = null
-    @Inject
-    lateinit var factory: ViewModelProvider.Factory
-    private val viewModel: SearchViewModel by viewModels { factory }
+    private val viewModel: SearchViewModel by viewModels()
     private val DEFAULT_LATITUDE = 54.7887
     private val DEFAULT_LONGITUDE = 49.1221
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        App.appComponent.inject(this)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

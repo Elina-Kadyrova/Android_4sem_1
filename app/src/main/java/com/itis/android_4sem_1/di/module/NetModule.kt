@@ -2,8 +2,12 @@ package com.itis.android_4sem_1.di.module
 
 import com.itis.android_4sem_1.BuildConfig
 import com.itis.android_4sem_1.data.api.WeatherApi
+import com.itis.android_4sem_1.di.qualifier.ApiKeyInterceptor
+import com.itis.android_4sem_1.di.qualifier.LoggingInterceptor
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -17,11 +21,11 @@ private const val API_URL = "https://api.openweathermap.org/data/2.5/"
 private const val API_KEY = "56fc6c6cb76c0864b4cd055080568268"
 
 @Module
+@InstallIn(SingletonComponent::class)
 class NetModule {
 
     @Provides
-    @Singleton
-    @Named("apiKey")
+    @ApiKeyInterceptor
     fun apiKeyInterceptor(): Interceptor =
         Interceptor{
                 chain ->
@@ -36,8 +40,7 @@ class NetModule {
         }
 
     @Provides
-    @Singleton
-    @Named("logger")
+    @LoggingInterceptor
     fun provideLoggingInterceptor(): Interceptor {
         return HttpLoggingInterceptor()
             .setLevel(
@@ -46,10 +49,9 @@ class NetModule {
     }
 
     @Provides
-    @Singleton
     fun okhttp(
-        @Named("apiKey") apiKeyInterceptor: Interceptor,
-        @Named("logger") loggingInterceptor: Interceptor,
+        @ApiKeyInterceptor apiKeyInterceptor: Interceptor,
+        @LoggingInterceptor loggingInterceptor: Interceptor,
     ): OkHttpClient =
         OkHttpClient.Builder()
             .addInterceptor(apiKeyInterceptor)
@@ -61,11 +63,9 @@ class NetModule {
             .build()
 
     @Provides
-    @Singleton
     fun provideGsonConverter(): GsonConverterFactory = GsonConverterFactory.create()
 
     @Provides
-    @Singleton
     fun weatherApi(
         okHttpClient: OkHttpClient,
         gsonConverter: GsonConverterFactory,

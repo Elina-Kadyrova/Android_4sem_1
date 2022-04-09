@@ -15,24 +15,20 @@ import com.itis.android_4sem_1.R
 import com.itis.android_4sem_1.databinding.FragmentDetailBinding
 import com.itis.android_4sem_1.domain.entity.DetailModel
 import com.itis.android_4sem_1.presentation.viewModel.DetailViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlinx.android.synthetic.main.fragment_detail.*
 import java.text.SimpleDateFormat
 import javax.inject.Inject
 
+
+@AndroidEntryPoint
 class DetailFragment : Fragment() {
 
     private var binding: FragmentDetailBinding? = null
     private var city: String? = null
-    @Inject
-    lateinit var factory: ViewModelProvider.Factory
-    private val viewModel: DetailViewModel by viewModels { factory }
+    private val viewModel: DetailViewModel by viewModels()
     private var detailModel: DetailModel? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        App.appComponent.inject(this)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

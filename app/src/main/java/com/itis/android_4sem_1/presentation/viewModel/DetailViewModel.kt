@@ -6,9 +6,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.itis.android_4sem_1.domain.entity.DetailModel
 import com.itis.android_4sem_1.domain.usecases.GetWeatherUsecase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class DetailViewModel @Inject constructor(
     private val getWeatherUsecase: GetWeatherUsecase
 ):ViewModel() {

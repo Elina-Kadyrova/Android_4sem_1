@@ -1,6 +1,6 @@
 package com.itis.android_4sem_1.utils
 
-import androidx.lifecycle.ViewModel
+/*import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import javax.inject.Inject
 import javax.inject.Provider
@@ -16,5 +16,4 @@ class ViewModelFactory @Inject constructor(
         @Suppress("UNCHECKED_CAST")
         return result.get() as T
     }
-}
-
+}*/

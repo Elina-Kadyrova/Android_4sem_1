@@ -8,9 +8,11 @@ import com.itis.android_4sem_1.domain.entity.DetailModel
 import com.itis.android_4sem_1.domain.entity.ListModel
 import com.itis.android_4sem_1.domain.usecases.GetWeatherListUsecase
 import com.itis.android_4sem_1.domain.usecases.GetWeatherUsecase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class SearchViewModel @Inject constructor(
     private val getWeatherUsecase: GetWeatherUsecase,
     private val getWeatherListUsecase: GetWeatherListUsecase
